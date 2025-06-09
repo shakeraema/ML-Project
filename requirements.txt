@@ -1,31 +1,31 @@
-flask
-pandas
-numpy
-scikit-learn==1.1.3
-notebook
-ipykernel
-matplotlib
-seaborn
-scipy
-# For Jupyter Notebook support
-jupyterlab
-# For data visualization
-plotly
-# For machine learning model serving
-flask-cors
-# For environment management
-python-dotenv
-# For testing
-pytest
-# For API documentation
-flask-restful
-# For database interaction
-flask-sqlalchemy
-# For caching
-flask-caching
-# For authentication
-flask-login
-# For deployment
-gunicorn
-# For logging
-flask-logging
+# flask
+# pandas
+# numpy
+# scikit-learn==1.1.3
+# notebook
+# ipykernel
+# matplotlib
+# seaborn
+# scipy
+# # For Jupyter Notebook support
+# jupyterlab
+# # For data visualization
+# plotly
+# # For machine learning model serving
+# flask-cors
+# # For environment management
+# python-dotenv
+# # For testing
+# pytest
+# # For API documentation
+# flask-restful
+# # For database interaction
+# flask-sqlalchemy
+# # For caching
+# flask-caching
+# # For authentication
+# flask-login
+# # For deployment
+# gunicorn
+# # For logging
+# flask-logging
