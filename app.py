@@ -10,19 +10,24 @@ model = pickle.load(open('model.pkl', 'rb'))
 def index():
     return render_template("index.html")
 
-@app.route('/predict',methods = ['POST'])
+@app.route('/predict', methods=['POST'])
 def predict():
-     input_text = request.form['text']
-     input_text_sp = input_text.split(',')
-     np_data = np.asarray(input_text_sp,dtype = np.float32)
-     prediction = model.predict(np_data.reshape(1,-1))
+    try:
+        data = request.get_json()
+        features = data.get('data', [])
 
-     if prediction == 1 :
-          output = "This person has a Parkinson Disease"
-     else:
-          output = "This person has no Parkinson Disease"
+        if len(features) != 22:
+            return jsonify({"prediction": "Error: Please provide exactly 22 inputs."}), 400
 
-     return render_template("index.html", message=output)
+        np_data = np.asarray(features, dtype=np.float32)
+        prediction = model.predict(np_data.reshape(1, -1))
+
+        output = "This person has Parkinson's Disease." if prediction[0] == 1 else "This person does not have Parkinson's Disease."
+
+        return jsonify({"prediction": output})
+        
+    except Exception as e:
+        return jsonify({"prediction": f"Error: {str(e)}"}), 500
 
 if __name__ == "__main__":
      app.run(debug=True)
