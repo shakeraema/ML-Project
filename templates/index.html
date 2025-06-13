@@ -24,27 +24,25 @@
             width: 100%;
             transition: all 0.3s ease-in-out;
         }
-        
-/*         .glass-card:hover {
+        /*         .glass-card:hover {
             box-shadow: 0 16px 48px rgba(0, 0, 0, 0.15);
         } */
-
+        
         .page-section {
             display: none;
             padding: 40px 20px;
         }
-        
-/*         h1 {
+        /*         h1 {
             font-weight: 700;
             color: #0d47a1;
             font-size: 2rem;
             margin-bottom: 10px;
         } */
-
+        
         .active {
             display: block;
         }
-
+        
         .header {
             background: linear-gradient(135deg, #0a9396, #005f73);
             color: white;
@@ -54,7 +52,7 @@
             border-bottom-right-radius: 40px;
             margin-bottom: 2rem;
         }
-
+        
         .btn-start {
             background-color: #0a9396;
             border: none;
@@ -67,8 +65,7 @@
         .btn-start:hover {
             background-color: #005f73;
         }
-        
-/*         p.description {
+        /*         p.description {
             font-size: 0.95rem;
             color: #555;
             margin-bottom: 30px;
@@ -83,8 +80,7 @@
             padding: 12px;
             border: 1px solid #ccc;
         } */
-        
-/*         .btn-primary {
+        /*         .btn-primary {
             background-color: #0d47a1;
             border: none;
             padding: 12px 0;
@@ -92,8 +88,7 @@
             border-radius: 10px;
             transition: background-color 0.2s ease-in-out;
         } */
-        
-/*         .btn-primary:hover {
+        /*         .btn-primary:hover {
             background-color: #0b3c91;
         }
         
@@ -169,53 +164,75 @@
                   <label>${label}</label>
                   <input type="number" step="any" class="form-control" name="feature" required />
                 </div>
+                
               `);
                         });
                     </script>
-                    </div>
+                </div>
 
-                    <div class="d-grid mt-4">
-                        <button type="submit" class="btn btn-primary">Predict</button>
-                    </div>
-                </form>
-    
-                <div id="result" class="text-center mt-4"></div>
+                <div class="d-grid mt-4">
+                    <button type="submit" class="btn btn-primary">Predict</button>
+                </div>
+            </form>
+
+            <div id="result" class="text-center mt-4"></div>
+        </div>
+    </div>
+
+    <!-- Page 3: Result -->
+
+    <div id="page3" class="page-section">
+        <div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+            <div class="glass-card text-center">
+                <h2 class="mb-3 text-success display-6">🧪 Prediction Result</h2>
+                <div id="resultText" class="fw-bold fs-4 mb-3 text-dark"></div>
+                <p class="text-muted mb-4">
+                    ⚠️ This is a prediction based on machine learning analysis of voice parameters. It is not a clinical diagnosis. Please consult a medical professional for confirmation.
+                </p>
+                <button class="btn btn-outline-primary rounded-pill px-4" onclick="goToHome()">🔄 Try Again</button>
             </div>
         </div>
-    
-        <script>
-            function goToForm() {
-                document.getElementById("page1").classList.remove("active");
-                document.getElementById("page2").classList.add("active");
-            }
-    
-            // Handle prediction
-            document.getElementById("predictionForm").addEventListener("submit", async function(e) {
-                e.preventDefault();
-                const inputs = document.querySelectorAll("input[name='feature']");
-                const values = Array.from(inputs).map(input => parseFloat(input.value));
-    
-                try {
-                    const response = await fetch("/predict", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({
-                            data: values
-                        })
-                    });
-    
-                    const result = await response.json();
-                    document.getElementById("result").innerHTML =
-    `<div class="alert alert-info"><strong>Prediction:</strong> ${result.prediction}</div>`;
+    </div>
 
-                } catch (error) {
-                    document.getElementById("result").innerHTML =
-    `<div class="alert alert-danger">Error: ${error.message}</div>`;
-                }
-            });
-        </script>
+
+    <script>
+        function goToForm() {
+            document.getElementById("page1").classList.remove("active");
+            document.getElementById("page2").classList.add("active");
+        }
+
+        function goBack() {
+            document.getElementById("page3").classList.remove("active");
+            document.getElementById("page2").classList.add("active");
+        }
+
+        // Handle prediction
+        document.getElementById("predictionForm").addEventListener("submit", async function(e) {
+            e.preventDefault();
+            const inputs = document.querySelectorAll("input[name='feature']");
+            const values = Array.from(inputs).map(input => parseFloat(input.value));
+
+            try {
+                const response = await fetch("/predict", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        data: values
+                    })
+                });
+
+                const result = await response.json();
+                document.getElementById("page2").classList.remove("active");
+                document.getElementById("page3").classList.add("active");
+                document.getElementById("resultText").innerText = result.prediction;
+            } catch (error) {
+                document.getElementById("result").innerHTML =
+                    `<div class="alert alert-danger">Error: ${error.message}</div>`;
+            }
+        });
+    </script>
 </body>
 
 </html>
